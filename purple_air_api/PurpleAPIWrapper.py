@@ -1,5 +1,7 @@
+from typing import Any, Dict, List, Optional
+
 import requests
-from typing import Optional, Dict, Any, List
+
 
 class PurpleAirAPIError(Exception):
     """Custom exception for errors interacting with PurpleAir API."""

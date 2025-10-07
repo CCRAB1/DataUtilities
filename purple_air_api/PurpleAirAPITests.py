@@ -1,8 +1,8 @@
 # test_purpleair_client.py
+from unittest.mock import MagicMock, patch
+
 import pytest
-import requests
-from unittest.mock import patch, MagicMock
-from PurpleAPIWrapper import PurpleAirClient, PurpleAirAPIError
+from PurpleAPIWrapper import PurpleAirAPIError, PurpleAirClient
 
 API_KEY = "test_key"
 
@@ -94,4 +94,23 @@ def test_get_members_data_with_fields(mock_request, client):
     mock_request.return_value = make_mock_response(
         200, {"data": [{"pm2.5_atm": 12.3}]}
     )
-    result = c
+    result = client.get_members_data(1, fields=["pm2.5_atm"])
+    assert result["data"][0]["pm2.5_atm"] == 12.3
+    args, kwargs = mock_request.call_args
+    assert kwargs["params"]["fields"] == "pm2.5_atm"
+
+
+# -------- Error handling --------
+
+@patch("requests.request")
+def test_non_json_response_raises(client, mock_request):
+    mock_request.return_value = make_mock_response(200, json_data=None)
+    with pytest.raises(PurpleAirAPIError):
+        client.get_groups()
+
+
+@patch("requests.request")
+def test_http_error_raises(client, mock_request):
+    mock_request.return_value = make_mock_response(404, text="Not Found")
+    with pytest.raises(PurpleAirAPIError):
+        client.get_group_detail(999)
