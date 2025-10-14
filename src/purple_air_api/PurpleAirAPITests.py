@@ -6,6 +6,7 @@ from PurpleAPIWrapper import PurpleAirAPIError, PurpleAirClient
 
 API_KEY = "test_key"
 
+
 @pytest.fixture
 def client():
     return PurpleAirClient(api_key=API_KEY, timeout=1.0)
@@ -25,6 +26,7 @@ def make_mock_response(status_code=200, json_data=None, text="OK"):
 
 
 # -------- Organization tests --------
+
 
 @patch("requests.request")
 def test_get_organization_success(mock_request, client):
@@ -47,6 +49,7 @@ def test_update_organization_success(mock_request, client):
 
 # -------- Sensor tests --------
 
+
 @patch("requests.request")
 def test_get_sensor_with_fields(mock_request, client):
     mock_request.return_value = make_mock_response(
@@ -66,6 +69,7 @@ def test_get_sensor_history_error(mock_request, client):
 
 
 # -------- Group tests --------
+
 
 @patch("requests.request")
 def test_create_group(mock_request, client):
@@ -91,9 +95,7 @@ def test_add_and_remove_member(mock_request, client):
 
 @patch("requests.request")
 def test_get_members_data_with_fields(mock_request, client):
-    mock_request.return_value = make_mock_response(
-        200, {"data": [{"pm2.5_atm": 12.3}]}
-    )
+    mock_request.return_value = make_mock_response(200, {"data": [{"pm2.5_atm": 12.3}]})
     result = client.get_members_data(1, fields=["pm2.5_atm"])
     assert result["data"][0]["pm2.5_atm"] == 12.3
     args, kwargs = mock_request.call_args
@@ -101,6 +103,7 @@ def test_get_members_data_with_fields(mock_request, client):
 
 
 # -------- Error handling --------
+
 
 @patch("requests.request")
 def test_non_json_response_raises(client, mock_request):
