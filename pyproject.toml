@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "datautilites"
+name = "datautilities"
 version = "0.1.0"
 description = ""
 authors = ["DANRAMAGE <ChiefDan@gmail.com>"]
