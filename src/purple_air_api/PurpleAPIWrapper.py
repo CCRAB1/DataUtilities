@@ -5,7 +5,9 @@ import requests
 
 class PurpleAirAPIError(Exception):
     """Custom exception for errors interacting with PurpleAir API."""
+
     pass
+
 
 class PurpleAirClient:
     BASE_URL = "https://api.purpleair.com/v1"
@@ -21,15 +23,22 @@ class PurpleAirClient:
         }
         self.timeout = timeout
 
-    def _request(self, method: str, path: str,
-                 params: Optional[Dict[str, Any]] = None,
-                 json_body: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def _request(
+        self,
+        method: str,
+        path: str,
+        params: Optional[Dict[str, Any]] = None,
+        json_body: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         url = f"{self.BASE_URL}{path}"
-        resp = requests.request(method, url,
-                                headers=self.headers,
-                                params=params,
-                                json=json_body,
-                                timeout=self.timeout)
+        resp = requests.request(
+            method,
+            url,
+            headers=self.headers,
+            params=params,
+            json=json_body,
+            timeout=self.timeout,
+        )
         if resp.status_code < 200 or resp.status_code >= 300:
             try:
                 err = resp.json()
@@ -53,10 +62,11 @@ class PurpleAirClient:
         path = "/organization"
         return self._request("GET", path)
 
-
     # ----- Sensor endpoints -----
 
-    def get_sensor(self, sensor_index: int, fields: Optional[List[str]] = None) -> Dict[str, Any]:
+    def get_sensor(
+        self, sensor_index: int, fields: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
         """
         GET /v1/sensors/{sensor_index}
         Retrieve real-time (or latest) data for a specific sensor.
@@ -69,8 +79,12 @@ class PurpleAirClient:
             params["fields"] = ",".join(fields)
         return self._request("GET", path, params=params)
 
-    def get_sensors(self, sensor_indices: List[int], fields: Optional[List[str]] = None,
-                    show_only: Optional[List[int]] = None) -> Dict[str, Any]:
+    def get_sensors(
+        self,
+        sensor_indices: List[int],
+        fields: Optional[List[str]] = None,
+        show_only: Optional[List[int]] = None,
+    ) -> Dict[str, Any]:
         """
         GET /v1/sensors
         Retrieve real-time data for multiple sensors.
@@ -88,11 +102,14 @@ class PurpleAirClient:
             params["fields"] = ",".join(fields)
         return self._request("GET", path, params=params)
 
-    def get_sensor_history(self, sensor_index: int,
-                            start_timestamp: int,
-                            end_timestamp: int,
-                            average: Optional[str] = None,
-                            fields: Optional[List[str]] = None) -> Dict[str, Any]:
+    def get_sensor_history(
+        self,
+        sensor_index: int,
+        start_timestamp: int,
+        end_timestamp: int,
+        average: Optional[str] = None,
+        fields: Optional[List[str]] = None,
+    ) -> Dict[str, Any]:
         """
         GET /v1/sensors/{sensor_index}/history
         Retrieve historical data for a given sensor, between given timestamps.
@@ -106,7 +123,7 @@ class PurpleAirClient:
         path = f"/sensors/{sensor_index}/history"
         params: Dict[str, Any] = {
             "start_timestamp": start_timestamp,
-            "end_timestamp": end_timestamp
+            "end_timestamp": end_timestamp,
         }
         if average:
             params["average"] = average
@@ -180,8 +197,12 @@ class PurpleAirClient:
         path = f"/groups/{group_id}/members/{member_id}"
         return self._request("DELETE", path)
 
-    def get_members_data(self, group_id: int, fields: Optional[List[str]] = None,
-                         modified_since: Optional[int] = None) -> Dict[str, Any]:
+    def get_members_data(
+        self,
+        group_id: int,
+        fields: Optional[List[str]] = None,
+        modified_since: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """
         GET /v1/groups/{group_id}/members/data
         Get real-time data for all members in a group.
@@ -196,7 +217,9 @@ class PurpleAirClient:
             params["modified_since"] = modified_since
         return self._request("GET", path, params=params)
 
-    def get_member_data(self, group_id: int, member_id: int, fields: Optional[List[str]] = None) -> Dict[str, Any]:
+    def get_member_data(
+        self, group_id: int, member_id: int, fields: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
         """
         GET /v1/groups/{group_id}/members/{member_id}/data
         Get data for a specific member in a group.
