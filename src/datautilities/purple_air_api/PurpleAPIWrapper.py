@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 import requests
 
 logger = logging.getLogger(__name__)
+logger.info(f"{__name__} logger opened.")
 
 
 class PurpleAirAPIError(Exception):
