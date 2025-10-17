@@ -180,6 +180,7 @@ class PurpleAirClient:
         if resp.status_code < 200 or resp.status_code >= 300:
             try:
                 err = resp.json()
+                logger.error(err)
             except Exception as e:
                 err = resp.text
                 logger.exception(e)
