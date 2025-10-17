@@ -180,13 +180,13 @@ class PurpleAirClient:
         if resp.status_code < 200 or resp.status_code >= 300:
             try:
                 err = resp.json()
-            except ValueError as e:
-                logger.exception(e)
+            except Exception as e:
                 err = resp.text
+                logger.exception(e)
             raise PurpleAirAPIError(f"Error {resp.status_code} {method} {url}: {err}")
         try:
             return resp.json()
-        except ValueError as e:
+        except Exception as e:
             logger.exception(e)
             raise PurpleAirAPIError(f"Non-JSON response {method} {url}: {e}")
 
