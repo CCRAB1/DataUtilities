@@ -258,7 +258,7 @@ class PurpleAirClient:
         :param sensor_index: sensor index
         :param start_timestamp: UNIX epoch (seconds) or as required by API
         :param end_timestamp: UNIX epoch
-        :param average: averaging interval (e.g. “1h”, “24h”, etc.), if supported
+        :param average: averaging interval, if supported
         :param fields: which fields to return
         """
         path = f"/sensors/{sensor_index}/history"
@@ -266,7 +266,7 @@ class PurpleAirClient:
             "start_timestamp": start_timestamp,
             "end_timestamp": end_timestamp,
         }
-        if average:
+        if average is not None:
             params["average"] = average
         if fields:
             params["fields"] = ",".join(fields)
