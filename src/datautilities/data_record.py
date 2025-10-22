@@ -8,6 +8,9 @@ class DataRecord:
         s_order,
         value,
         date_time,
+        latitude,
+        longitude,
+        altitude,
     ):
         self.organization = organization
         self.platform_handle = platform_handle
@@ -16,3 +19,6 @@ class DataRecord:
         self.s_order = s_order
         self.value = value
         self.date_time = date_time
+        self.latitude = latitude
+        self.longitude = longitude
+        self.altitude = altitude
