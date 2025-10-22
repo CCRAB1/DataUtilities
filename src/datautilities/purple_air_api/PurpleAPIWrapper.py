@@ -248,7 +248,7 @@ class PurpleAirClient:
         sensor_index: int,
         start_timestamp: int,
         end_timestamp: int,
-        average: Optional[str] = None,
+        average: Optional[int] = None,
         fields: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
         """
