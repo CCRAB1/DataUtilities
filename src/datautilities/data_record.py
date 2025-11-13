@@ -1,24 +1,16 @@
-class DataRecord:
-    def __init__(
-        self,
-        organization,
-        platform_handle,
-        obs_type,
-        uom_type,
-        s_order,
-        value,
-        date_time,
-        latitude,
-        longitude,
-        altitude,
-    ):
-        self.organization = organization
-        self.platform_handle = platform_handle
-        self.obs_type = obs_type
-        self.uom_type = uom_type
-        self.s_order = s_order
-        self.value = value
-        self.date_time = date_time
-        self.latitude = latitude
-        self.longitude = longitude
-        self.altitude = altitude
+from datetime import datetime
+
+from pydantic import BaseModel
+
+
+class DataRecord(BaseModel):
+    organization: str
+    platform_handle: str
+    obs_type: str
+    uom_type: str
+    s_order: int
+    value: float
+    date_time: datetime
+    latitude: float
+    longitude: float
+    altitude: float
