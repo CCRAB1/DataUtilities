@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class DataRecord(BaseModel):
+class PlatformDataRecord(BaseModel):
     organization: str
     platform_handle: str
     obs_type: str
