@@ -39,7 +39,7 @@ class SampleModel(BaseModel):
 
     name: Optional[str] = None
     description: Optional[str] = None
-    sample_date: datetime
+    sample_date: datetime = datetime.strptime("1900-01-01", "%Y-%m-%d")
 
     latitude: Optional[float] = Field(None, ge=-90, le=90)
     longitude: Optional[float] = Field(None, ge=-180, le=180)
