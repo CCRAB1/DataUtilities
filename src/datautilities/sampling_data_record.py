@@ -22,7 +22,7 @@ class AttachmentModel(BaseModel):
 
 class AnswerModel(BaseModel):
     key: constr(strip_whitespace=True, max_length=150)
-    question_text: str
+    question_text: str = ""
     value_text: Optional[str] = None
     value_numeric: Optional[confloat(ge=-1e12, le=1e12)] = None
     value_boolean: Optional[bool] = None
