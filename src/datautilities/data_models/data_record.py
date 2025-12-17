@@ -30,6 +30,7 @@ class PlatformRecord(BaseRecord):
     kind: Literal["user"] = "platformrecord"
     organization: str
     platform_handle: str
+    date_time: datetime
     latitude: float
     longitude: float
     altitude: float
