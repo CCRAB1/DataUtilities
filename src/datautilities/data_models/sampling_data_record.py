@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
+from base_record import BaseRecord
 from pydantic import BaseModel, Field, HttpUrl, confloat, constr
 
 
@@ -32,7 +33,9 @@ class AnswerModel(BaseModel):
     note: Optional[str] = None
 
 
-class SampleModel(BaseModel):
+class SampleModel(BaseRecord):
+    kind: Literal["user"] = "samplerecord"
+
     external_id: Optional[str] = None
     plugin_id: Optional[str] = None
     plugin_version: Optional[str] = None
