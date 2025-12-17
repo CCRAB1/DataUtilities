@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import List, Literal
 
-from base_record import BaseRecord
 from pydantic import BaseModel
+
+from .base_record import BaseRecord
 
 
 class PlatformDataRecord(BaseRecord):

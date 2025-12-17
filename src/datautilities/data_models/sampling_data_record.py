@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from base_record import BaseRecord
 from pydantic import BaseModel, Field, HttpUrl, confloat, constr
+
+from .base_record import BaseRecord
 
 
 class AttachmentModel(BaseModel):
