@@ -30,7 +30,8 @@ class AnswerModel(BaseModel):
     value_boolean: Optional[bool] = None
     value_json: Optional[Dict[str, Any]] = None
     answer_order: Optional[int] = 0
-    qc_flag: Optional[str] = None
+    qc_comment_field: Optional[str] = None
+    qc_flag: Optional[int] = None
     note: Optional[str] = None
 
 
