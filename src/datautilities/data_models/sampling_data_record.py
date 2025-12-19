@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, Field, HttpUrl, confloat, constr
+from pydantic import BaseModel, Field, HttpUrl, constr
 
 from .base_record import BaseRecord
 
@@ -26,7 +26,7 @@ class AnswerModel(BaseModel):
     key: constr(strip_whitespace=True, max_length=150)
     question_text: str = ""
     value_text: Optional[str] = None
-    value_numeric: Optional[confloat(ge=-1e12, le=1e12)] = None
+    value_numeric: Optional[float] = None
     value_boolean: Optional[bool] = None
     value_json: Optional[Dict[str, Any]] = None
     answer_order: Optional[int] = 0
