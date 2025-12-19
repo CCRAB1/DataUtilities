@@ -36,7 +36,7 @@ class AnswerModel(BaseModel):
 
 
 class SampleModel(BaseRecord):
-    kind: Literal["user"] = "samplerecord"
+    kind: Literal["samplerecord"] = "samplerecord"
 
     external_id: Optional[str] = None
     plugin_id: Optional[str] = None
