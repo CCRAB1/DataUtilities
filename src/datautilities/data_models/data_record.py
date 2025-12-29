@@ -27,7 +27,7 @@ class DataRecord(BaseModel):
 
 
 class PlatformRecord(BaseRecord):
-    kind: Literal["user"] = "platformrecord"
+    kind: Literal["platformrecord"] = "platformrecord"
     organization: str
     platform_handle: str
     date_time: datetime
