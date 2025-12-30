@@ -1,5 +1,5 @@
 import logging.config
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import requests
 
@@ -250,6 +250,7 @@ class PurpleAirClient:
         end_timestamp: int,
         average: Optional[int] = None,
         fields: Optional[List[str]] = None,
+        return_format: Literal["json", "csv"] = "json",
     ) -> Dict[str, Any]:
         """
         GET /v1/sensors/{sensor_index}/history
@@ -270,6 +271,8 @@ class PurpleAirClient:
             params["average"] = average
         if fields:
             params["fields"] = ",".join(fields)
+        if return_format == "csv":
+            path = f"{path}/csv"
         return self._request("GET", path, params=params)
 
     # ----- Group endpoints -----
