@@ -155,9 +155,9 @@ class PurpleAirClient:
             raise ValueError("API key must be provided.")
         self.api_key = api_key
         self.headers = {
-            "X-API-Key": self.api_key,
-            "Accept": "application/json",
-            "Content-Type": "application/json",
+            "X-API-Key": self.api_key
+            # "Accept": "application/json",
+            # "Content-Type": "application/json",
         }
         self.timeout = timeout
 
@@ -272,6 +272,7 @@ class PurpleAirClient:
         if fields:
             params["fields"] = ",".join(fields)
         if return_format == "csv":
+            # self.headers["Content-Type"] = "application/json"
             path = f"{path}/csv"
         return self._request("GET", path, params=params)
 
