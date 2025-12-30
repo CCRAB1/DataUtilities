@@ -186,7 +186,11 @@ class PurpleAirClient:
                 logger.exception(e)
             raise PurpleAirAPIError(f"Error {resp.status_code} {method} {url}: {err}")
         try:
-            return resp.json()
+            content_type = resp.headers.get("Content-Type", "").lower()
+            if content_type == "application/json":
+                return resp.json()
+            else:
+                return resp.text
         except Exception as e:
             logger.exception(e)
             raise PurpleAirAPIError(f"Non-JSON response {method} {url}: {e}")
