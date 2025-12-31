@@ -1,5 +1,5 @@
 import logging.config
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, Iterator, List, Literal, Optional, Union
 
 import requests
 
@@ -167,7 +167,8 @@ class PurpleAirClient:
         path: str,
         params: Optional[Dict[str, Any]] = None,
         json_body: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+        stream: bool = False,
+    ) -> Union[Dict[str, Any], str, Iterator[str]]:
         url = f"{self.BASE_URL}{path}"
         resp = requests.request(
             method,
@@ -188,7 +189,31 @@ class PurpleAirClient:
         try:
             content_type = resp.headers.get("Content-Type", "").lower()
             if content_type == "application/json":
-                return resp.json()
+                data = resp.json()
+                try:
+                    resp.close()
+                except Exception:
+                    pass
+                return data
+            # If caller asked for streaming, return a safe iterator of decoded lines
+            if stream:
+
+                def _line_iterator() -> Iterator[str]:
+                    try:
+                        # decode_unicode=True yields str lines
+                        for raw_line in resp.iter_lines(decode_unicode=True):
+                            # iter_lines can yield b'' or None; skip falsy empty lines? keep them if important
+                            # We yield the line exactly as iter_lines provided (it is already str)
+                            yield raw_line
+                    finally:
+                        # always close the response to release the connection
+                        try:
+                            resp.close()
+                        except Exception:
+                            pass
+
+                return _line_iterator()
+
             else:
                 return resp.text
         except Exception as e:
