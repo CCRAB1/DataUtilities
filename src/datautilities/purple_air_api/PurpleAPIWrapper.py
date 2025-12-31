@@ -280,6 +280,7 @@ class PurpleAirClient:
         average: Optional[int] = None,
         fields: Optional[List[str]] = None,
         return_format: Literal["json", "csv"] = "json",
+        stream: bool = False,
     ) -> Dict[str, Any]:
         """
         GET /v1/sensors/{sensor_index}/history
@@ -303,7 +304,7 @@ class PurpleAirClient:
         if return_format == "csv":
             # self.headers["Content-Type"] = "application/json"
             path = f"{path}/csv"
-        return self._request("GET", path, params=params)
+        return self._request("GET", path, params=params, stream=stream)
 
     # ----- Group endpoints -----
 
