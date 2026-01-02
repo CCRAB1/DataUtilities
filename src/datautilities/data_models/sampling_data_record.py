@@ -1,7 +1,9 @@
+import csv
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, Field, HttpUrl, constr
+from pydantic import BaseModel, Field, HttpUrl, Union, constr
 
 from .base_record import BaseRecord
 
@@ -61,6 +63,67 @@ class SampleModel(BaseRecord):
     attachments: List[AttachmentModel] = []
     attributes: Optional[Dict[str, Any]] = {}
     raw_payload: Optional[Dict[str, Any]] = None
+
+    def export_to_csv(
+        self,
+        path: Union[str, Path],
+        include_answers: bool = True,
+        include_attachments: bool = True,
+    ) -> Path:
+        """
+        Exports this SampleModel (and optionally its answers and attachments)
+        into a CSV file. If answers are included, each answer becomes a row.
+        """
+        path = Path(path)
+        rows = []
+
+        if include_answers and self.answers:
+            for ans in self.answers:
+                rows.append(
+                    {
+                        "sample_external_id": self.external_id,
+                        "plugin_id": self.plugin_id,
+                        "sample_name": self.name,
+                        "sample_date": self.sample_date.isoformat(),
+                        "latitude": self.latitude,
+                        "longitude": self.longitude,
+                        "organization_id": self.organization_id,
+                        "question_key": ans.key,
+                        "question_text": ans.question_text,
+                        "answer_order": ans.answer_order,
+                        "value_text": ans.value_text,
+                        "value_numeric": ans.value_numeric,
+                        "value_boolean": ans.value_boolean,
+                        "value_json": ans.value_json,
+                    }
+                )
+        else:
+            # Just write the sample-level info
+            rows.append(self.model_dump())
+
+        if include_attachments and self.attachments:
+            for att in self.attachments:
+                rows.append(
+                    {
+                        "sample_external_id": self.external_id,
+                        "plugin_id": self.plugin_id,
+                        "attachment_filename": att.filename,
+                        "attachment_mime_type": att.mime_type,
+                        "attachment_url": att.storage_url,
+                    }
+                )
+
+        # Gather all unique keys for header
+        fieldnames = sorted({k for r in rows for k in r.keys()})
+
+        # Write CSV
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+
+        return path
 
     class Config:
         extra = "allow"  # tolerate plugins sending extra fields
