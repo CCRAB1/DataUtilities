@@ -1,9 +1,9 @@
 import csv
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field, HttpUrl, Union, constr
+from pydantic import BaseModel, Field, HttpUrl, constr
 
 from .base_record import BaseRecord
 
